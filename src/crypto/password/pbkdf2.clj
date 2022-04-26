@@ -45,7 +45,7 @@
    (encrypt raw iterations "HMAC-SHA1"))
   ([raw iterations algorithm]
    (encrypt raw iterations algorithm (random/bytes 8)))
-  ([raw iterations algorithm salt]
+  ([^String raw iterations algorithm salt]
    {:pre [(contains? algorithm-codes algorithm)]}
    (let [key-length  160
          key-spec    (PBEKeySpec. (.toCharArray raw) salt iterations key-length)
@@ -57,10 +57,10 @@
           (str (if (= algorithm "HMAC-SHA1") "" (str algorithm "$")))
           (str (encode-int iterations) "$")))))
 
-(defn- decode-str [s]
+(defn- decode-str [^String s]
   (Base64/decodeBase64 (.getBytes s)))
 
-(defn- decode-int [s]
+(defn- decode-int [^String s]
   (int (Base64/decodeInteger (.getBytes s))))
 
 (defn check

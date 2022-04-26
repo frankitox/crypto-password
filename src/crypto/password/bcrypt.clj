@@ -13,11 +13,11 @@
   work factor is 11."
   ([raw]
    (encrypt raw default-work-factor))
-  ([raw work-factor]
+  ([^String raw work-factor]
    (.hashToString (BCrypt/withDefaults) work-factor (.toCharArray raw))))
 
 (defn check
   "Compare a raw string with a string encrypted with the [[encrypt]] function.
   Returns true if the string matches, false otherwise."
-  [raw encrypted]
+  [^String raw ^String encrypted]
   (.verified (.verify (BCrypt/verifyer) (.toCharArray raw) encrypted)))
